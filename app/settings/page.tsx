@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function SettingsPage() {
-  redirect("/editor?settings=1");
+  redirect("/dashboard?settings=1");
 }

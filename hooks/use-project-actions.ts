@@ -127,7 +127,7 @@ export function useProjectActions(): UseProjectActionsResult {
       if (!data.project?.id) throw new Error("Invalid response from server");
       const projectId: string = data.project.id;
       closeDialog();
-      router.push(`/editor/${projectId}`);
+      router.push(`/projects/${projectId}`);
     } catch (err) {
       setError(unwrapErrorMessage(err, "Failed to create project"));
       setLoading(false);
@@ -157,7 +157,7 @@ export function useProjectActions(): UseProjectActionsResult {
     if (!deleteTarget) return;
     setLoading(true);
     setError(null);
-    const isActive = pathname === `/editor/${deleteTarget.projectId}`;
+    const isActive = pathname === `/projects/${deleteTarget.projectId}`;
     try {
       const res = await fetch(`/api/projects/${deleteTarget.projectId}`, {
         method: "DELETE",
@@ -167,7 +167,7 @@ export function useProjectActions(): UseProjectActionsResult {
       if (!res.ok) throw new Error(await parseJsonError(res));
       closeDialog();
       if (isActive) {
-        router.push("/editor");
+        router.push("/dashboard");
       } else {
         router.refresh();
       }

@@ -47,7 +47,7 @@ interface EditorChromeProps {
   ownedProjects: Project[];
   sharedProjects: Project[];
   project?: Project;
-  currentRoomId?: string;
+  currentProjectId?: string;
   openSettingsInitially?: boolean;
 }
 
@@ -59,7 +59,7 @@ export function EditorChrome({
   ownedProjects,
   sharedProjects,
   project,
-  currentRoomId,
+  currentProjectId,
   openSettingsInitially = false,
 }: EditorChromeProps) {
   const router = useRouter();
@@ -76,7 +76,7 @@ export function EditorChrome({
   useEffect(() => {
     if (openSettingsInitially) {
       setSettingsOpen(true);
-      router.replace("/editor", { scroll: false });
+      router.replace("/dashboard", { scroll: false });
     }
   }, [openSettingsInitially, router]);
 
@@ -240,7 +240,7 @@ export function EditorChrome({
         if (res.ok) {
           const data = await res.json();
           if (data.project?.id) {
-            router.push(`/editor/${data.project.id}`);
+            router.push(`/projects/${data.project.id}`);
             return;
           }
         }
@@ -285,7 +285,7 @@ export function EditorChrome({
                       currentUserId={currentUserId}
                       ownedProjects={ownedProjects}
                       sharedProjects={sharedProjects}
-                      currentRoomId={currentRoomId}
+                      currentProjectId={currentProjectId}
                       onSelectTemplate={handleTemplateSelect}
                     />
 
@@ -300,7 +300,7 @@ export function EditorChrome({
                             currentUserId={currentUserId}
                             ownedProjects={ownedProjects}
                             sharedProjects={sharedProjects}
-                            currentRoomId={currentRoomId}
+                            currentProjectId={currentProjectId}
                             isEmbedded={true}
                             onSelectTemplate={handleTemplateSelect}
                           />

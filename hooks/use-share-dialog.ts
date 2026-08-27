@@ -57,9 +57,9 @@ export function useShareDialog(
 
   const projectLink =
     typeof window !== "undefined" && projectId
-      ? `${window.location.origin}/editor/${projectId}`
+      ? `${window.location.origin}/projects/${projectId}`
       : projectId
-        ? `/editor/${projectId}`
+        ? `/projects/${projectId}`
         : "";
 
   const [prevOwnerProps, setPrevOwnerProps] = useState({ initialIsOwner, projectId });

@@ -27,7 +27,7 @@ export function AccessDenied() {
         </p>
       </div>
       <Button asChild variant="secondary">
-        <Link href="/editor">Back to projects</Link>
+        <Link href="/dashboard">Back to projects</Link>
       </Button>
     </div>
   );

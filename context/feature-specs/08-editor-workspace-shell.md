@@ -2,11 +2,11 @@
 
 **Status:** Complete
 
-Build the `/editor/[roomId]` workspace shell with server-side access checks. No canvas logic yet.
+Build the `/projects/[projectId]` workspace shell with server-side access checks. No canvas logic yet.
 
 ## Access
 
-`/editor/[roomId]` must be a server component.
+`/projects/[projectId]` must be a server component.
 
 Before rendering:
 
@@ -19,7 +19,7 @@ Create `components/editor/access-denied.tsx` with:
 - centered layout
 - lock icon
 - short message
-- link back to `/editor`
+- link back to `/dashboard`
 
 ## Access Helpers
 
@@ -47,7 +47,7 @@ Do not add real canvas logic, Supabase Realtime, AI chat, or sharing behavior ye
 
 ## Check When Done
 
-- `/editor/[roomId]` builds successfully
+- `/projects/[projectId]` builds successfully
 - access helper exists outside the page component
 - `AccessDenied` is used for missing or unauthorized projects
 - workspace layout renders with current project context

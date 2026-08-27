@@ -73,7 +73,7 @@ export function EditorNavbar({
             </Button>
 
             <Link
-              href="/editor"
+              href="/dashboard"
               className="flex items-center gap-1.5 transition-opacity hover:opacity-80"
               title="Architype Home"
             >
@@ -95,7 +95,7 @@ export function EditorNavbar({
         ) : (
           <div className="flex items-center gap-2 rounded-full border border-[var(--border-default)] bg-[var(--bg-surface)]/80 px-3 py-1.5 shadow-sm backdrop-blur-md transition-all hover:border-[var(--border-subtle)]">
             <Link
-              href="/editor"
+              href="/dashboard"
               className="flex items-center gap-2 transition-opacity hover:opacity-90"
             >
               <ArchitypeLogo size="xs" variant="mark" glow />

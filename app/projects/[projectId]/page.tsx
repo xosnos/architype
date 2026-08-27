@@ -6,13 +6,13 @@ import { hasProjectAccess } from "@/lib/project-access";
 import { getProject, listOwnedProjects, listSharedProjects } from "@/lib/projects/queries";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 
-interface EditorWorkspacePageProps {
-  params: Promise<{ roomId: string }>;
+interface ProjectWorkspacePageProps {
+  params: Promise<{ projectId: string }>;
 }
 
-export default async function EditorWorkspacePage({ params }: EditorWorkspacePageProps) {
+export default async function ProjectWorkspacePage({ params }: ProjectWorkspacePageProps) {
   const supabase = await createClient();
-  const { roomId } = await params;
+  const { projectId } = await params;
   const user = await getCurrentUser(supabase);
 
   if (!user) {
@@ -24,10 +24,10 @@ export default async function EditorWorkspacePage({ params }: EditorWorkspacePag
   const [ownedProjects, sharedProjects, project] = await Promise.all([
     listOwnedProjects(supabase, identity.userId),
     listSharedProjects(supabase, identity.email),
-    getProject(supabase, roomId),
+    getProject(supabase, projectId),
   ]);
 
-  const allowed = project ? await hasProjectAccess(supabase, roomId, identity) : false;
+  const allowed = project ? await hasProjectAccess(supabase, projectId, identity) : false;
 
   if (!project || !allowed) {
     return (
@@ -59,7 +59,7 @@ export default async function EditorWorkspacePage({ params }: EditorWorkspacePag
       ownedProjects={ownedProjects}
       sharedProjects={sharedProjects}
       project={project}
-      currentRoomId={roomId}
+      currentProjectId={projectId}
     >
       <CanvasWrapper
         projectId={project.id}

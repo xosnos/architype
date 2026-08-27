@@ -4,7 +4,7 @@
 
 ## Goal
 
-Build the `/editor` home screen and add project dialogs/sidebar actions. No API calls or persistence yet.
+Build the `/dashboard` home screen and add project dialogs/sidebar actions. No API calls or persistence yet.
 
 ## Editor Home
 

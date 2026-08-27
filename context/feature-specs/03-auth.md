@@ -42,7 +42,7 @@ Create `proxy.ts` at the project root (migrated from `middleware.ts` for Next.js
 - Call `supabase.auth.getUser()` to refresh the session.
 - Define public routes: `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/auth/callback`.
 - Redirect unauthenticated users to `/login` for all other routes.
-- Redirect authenticated users from `/` to `/editor`.
+- Redirect authenticated users from `/` to `/dashboard`.
 - Export a `config.matcher` that skips static assets, `_next`, and favicon.
 
 ### Auth Pages
@@ -59,13 +59,13 @@ All forms are client components with loading and error states. Use the existing 
 
 ### Auth Callback
 
-Create `app/auth/callback/route.ts` to handle the email confirmation and password reset redirect. Exchange the code for a session and redirect to `/editor` or `/reset-password`.
+Create `app/auth/callback/route.ts` to handle the email confirmation and password reset redirect. Exchange the code for a session and redirect to `/dashboard` or `/reset-password`.
 
 ### Root Page
 
 Update `/`:
 
-- authenticated users redirect to `/editor`
+- authenticated users redirect to `/dashboard`
 - unauthenticated users redirect to `/login`
 
 ### User Menu

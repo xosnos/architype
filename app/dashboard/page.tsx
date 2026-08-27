@@ -4,11 +4,11 @@ import { EditorHome } from "@/components/editor/editor-home";
 import { listOwnedProjects, listSharedProjects } from "@/lib/projects/queries";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 
-interface EditorPageProps {
+interface DashboardPageProps {
   searchParams: Promise<{ settings?: string }>;
 }
 
-export default async function EditorPage({ searchParams }: EditorPageProps) {
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const supabase = await createClient();
   const user = await getCurrentUser(supabase);
   const params = await searchParams;

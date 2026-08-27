@@ -120,7 +120,7 @@ export function EditorHome() {
 
       const data = await res.json();
       if (data.project?.id) {
-        router.push(`/editor/${data.project.id}`);
+        router.push(`/projects/${data.project.id}`);
       } else {
         openCreate();
       }

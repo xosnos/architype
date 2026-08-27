@@ -33,7 +33,7 @@ interface ProjectSidebarProps {
   currentUserId: string;
   ownedProjects: Project[];
   sharedProjects: Project[];
-  currentRoomId?: string;
+  currentProjectId?: string;
   isEmbedded?: boolean;
   onSelectTemplate?: (template: CanvasTemplate) => void;
 }
@@ -71,7 +71,7 @@ export function ProjectSidebar({
   currentUserId,
   ownedProjects,
   sharedProjects,
-  currentRoomId,
+  currentProjectId,
   isEmbedded = false,
   onSelectTemplate,
 }: ProjectSidebarProps) {
@@ -190,7 +190,7 @@ export function ProjectSidebar({
               <ProjectList
                 projects={filteredOwned}
                 currentUserId={currentUserId}
-                currentRoomId={currentRoomId}
+                currentProjectId={currentProjectId}
                 emptyMessage={searchQuery ? "No matching projects." : "No projects created yet."}
                 onRename={dialogs.openRename}
                 onDelete={dialogs.openDelete}
@@ -199,7 +199,7 @@ export function ProjectSidebar({
               <ProjectList
                 projects={filteredShared}
                 currentUserId={currentUserId}
-                currentRoomId={currentRoomId}
+                currentProjectId={currentProjectId}
                 emptyMessage={searchQuery ? "No matching shared projects." : "No shared projects."}
               />
             )}
@@ -284,7 +284,7 @@ export function ProjectSidebar({
     );
   }
 
-  // Otherwise, drawer mode (for mobile or inside active workspace /editor/[roomId]):
+  // Otherwise, drawer mode (for mobile or inside active workspace /projects/[projectId]):
   return (
     <>
       {isOpen && (
@@ -328,7 +328,7 @@ export function ProjectSidebar({
 interface ProjectListProps {
   projects: Project[];
   currentUserId: string;
-  currentRoomId?: string;
+  currentProjectId?: string;
   emptyMessage: string;
   onRename?: (projectId: string, currentName: string) => void;
   onDelete?: (projectId: string, projectName: string) => void;
@@ -337,7 +337,7 @@ interface ProjectListProps {
 function ProjectList({
   projects,
   currentUserId,
-  currentRoomId,
+  currentProjectId,
   emptyMessage,
   onRename,
   onDelete,
@@ -357,7 +357,7 @@ function ProjectList({
           key={project.id}
           project={project}
           currentUserId={currentUserId}
-          isActive={project.id === currentRoomId}
+          isActive={project.id === currentProjectId}
           colorIndex={stableColorIndex(project.id)}
           onRename={onRename}
           onDelete={onDelete}
@@ -405,7 +405,7 @@ function ProjectListItem({
           isActive && "bg-[var(--accent-primary-dim)] border-[var(--accent-primary)]/30",
         )}
       >
-        <Link href={`/editor/${project.id}`} className="flex min-w-0 flex-1 items-center gap-2.5">
+        <Link href={`/projects/${project.id}`} className="flex min-w-0 flex-1 items-center gap-2.5">
           {/* Mini diagram thumbnail */}
           <div
             className={cn(

@@ -5,7 +5,7 @@ export default async function Home() {
   const user = await getCurrentUser();
 
   if (user) {
-    redirect("/editor");
+    redirect("/dashboard");
   } else {
     redirect("/login");
   }

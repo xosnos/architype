@@ -42,7 +42,7 @@ The VM image already has the Docker engine, pnpm, and the Supabase CLI installed
 
 Non-obvious gotchas:
 
-- **`supabase/seed.sql` is load-bearing locally, not just sample data.** Hosted Supabase auto-grants DML on `public` tables to the `anon`/`authenticated` roles; the local CLI does not, so without the seed's `GRANT`s every query fails with `permission denied for table projects` and `/editor` shows "Application error: a server-side exception". If you recreate the DB, re-run `supabase start`/`supabase db reset` so the seed re-applies (or apply `supabase/seed.sql` manually).
-- **`/editor/[roomId]` is implemented** (spec 08). Share dialog (spec 09) opens from the workspace navbar Share button. Collaborator list enrichment needs `SUPABASE_SECRET_KEY` in `.env.local`.
+- **`supabase/seed.sql` is load-bearing locally, not just sample data.** Hosted Supabase auto-grants DML on `public` tables to the `anon`/`authenticated` roles; the local CLI does not, so without the seed's `GRANT`s every query fails with `permission denied for table projects` and `/dashboard` shows "Application error: a server-side exception". If you recreate the DB, re-run `supabase start`/`supabase db reset` so the seed re-applies (or apply `supabase/seed.sql` manually).
+- **`/projects/[projectId]` is implemented** (spec 08). Share dialog (spec 09) opens from the workspace navbar Share button. Collaborator list enrichment needs `SUPABASE_SECRET_KEY` in `.env.local`.
 - AI generation needs both `AUTOMATION_SECRET` and `OPENROUTER_API_KEY`. Hosted projects must also set Vault `ai_worker_url` and use a unique automation secret shared with the Edge Function.
 - `pnpm lint` (`biome check .`) and `pnpm build` are the standard repository checks. Biome (`@biomejs/biome`) is used for linting, formatting, and import organization.

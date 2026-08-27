@@ -37,7 +37,7 @@ The project ID and Realtime channel name should stay aligned.
 
 - store target project
 - call `DELETE /api/projects/[id]`
-- redirect to `/editor` if deleting the active workspace
+- redirect to `/dashboard` if deleting the active workspace
 - otherwise refresh
 
 ### Wiring

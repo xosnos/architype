@@ -72,7 +72,7 @@ export function LoginForm() {
       }
 
       router.refresh();
-      router.push("/editor");
+      router.push("/dashboard");
     } catch {
       setError("Something went wrong. Try again.");
     } finally {

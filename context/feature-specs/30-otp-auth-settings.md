@@ -38,7 +38,7 @@ Users sign up with a display name and email, then enter a 6-digit code from a br
 - **AC-9:** A revert token is valid for 7 days, single use, and bound to that user. A newer email change invalidates any previous open revert. Success restores the old email, rewrites collaborator emails back, and revokes all sessions for that user.
 - **AC-10:** `project_collaborators.email` follows the person when Auth email changes and when revert restores it. Owner access stays `projects.owner_id` (user id). If `(project_id, new_email)` already exists, drop the stale old-email row for that project.
 - **AC-11:** Delete account requires a fresh OTP to the **current** email, then a typed confirmation (the user's current email). The server deletes canvas and spec Storage objects for owned projects, removes collaborator rows for that email on other people's projects, then `auth.admin.deleteUser`. Owned projects, task runs, and spec metadata cascade via existing FKs. The browser signs out.
-- **AC-12:** `proxy.ts` public routes are `/login`, `/signup`, `/auth/callback`, `/auth/revert-email`, and `/api/account/email/revert`. Authenticated users visiting `/login` or `/signup` still redirect to `/editor`. Authenticated users visiting `/auth/revert-email` or posting to `/api/account/email/revert` are **not** redirected away.
+- **AC-12:** `proxy.ts` public routes are `/login`, `/signup`, `/auth/callback`, `/auth/revert-email`, and `/api/account/email/revert`. Authenticated users visiting `/login` or `/signup` still redirect to `/dashboard`. Authenticated users visiting `/auth/revert-email` or posting to `/api/account/email/revert` are **not** redirected away.
 - **AC-13:** Presence, share-dialog enrichment, and AI chat keep using `user_metadata.display_name` with the existing email-local-part fallback. Signup is what fills that field going forward.
 
 ## Decision
@@ -104,7 +104,7 @@ Keep `app/(auth)/layout.tsx`. Forms stay client components with loading and erro
 1. Fields: display name, email.
 2. On submit: `signInWithOtp({ email, options: { shouldCreateUser: true, data: { display_name } } })`.
 3. Same screen switches to a 6-digit OTP field (`autocomplete="one-time-code"`, paste allowed) plus Resend.
-4. On submit: `verifyOtp({ email, token, type: "email" })`, then `router.refresh()` and `/editor`.
+4. On submit: `verifyOtp({ email, token, type: "email" })`, then `router.refresh()` and `/dashboard`.
 5. If the email already has an account, still show the OTP step (Auth sends a code). Do not overwrite that account's display name.
 
 ### Login (`/login`)
@@ -134,7 +134,7 @@ In `components/editor/user-menu.tsx`, add a Settings item (gear icon) above Them
 
 ### Route
 
-`app/settings/page.tsx` is a server component, same data load as `app/editor/page.tsx` (current user, owned and shared projects). Wrap children in `EditorChrome`. Unauthenticated users hit `proxy.ts` and go to `/login`.
+`app/settings/page.tsx` is a server component, same data load as `app/dashboard/page.tsx` (current user, owned and shared projects). Wrap children in `EditorChrome`. Unauthenticated users hit `proxy.ts` and go to `/login`.
 
 The page is not a canvas workspace: no Share, Templates, or AI sidebar chrome beyond what `EditorChrome` already hides on non-workspace views.
 
@@ -279,9 +279,9 @@ const publicRoutes = [
 ];
 ```
 
-Keep the authenticated-user redirect from `/login` and `/signup` to `/editor`. Exclude `/auth/revert-email` and `/api/account/email/revert` from that redirect.
+Keep the authenticated-user redirect from `/login` and `/signup` to `/dashboard`. Exclude `/auth/revert-email` and `/api/account/email/revert` from that redirect.
 
-`/settings` is protected like `/editor`.
+`/settings` is protected like `/dashboard`.
 
 ## Email HTML
 
@@ -345,7 +345,7 @@ The revert message HTML lives with the Edge Function (not a GoTrue template) so 
 
 ## Check when done
 
-- Signup requires display name and a verified email OTP before `/editor`
+- Signup requires display name and a verified email OTP before `/dashboard`
 - Login is email plus OTP; no password UI
 - Forgot/reset routes are gone
 - OTP emails in Inbucket show Architype branding and a 6-digit code, not a login link
