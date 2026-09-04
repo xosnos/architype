@@ -7,28 +7,24 @@ export const SPECS_BUCKET = "specs";
 const SPEC_METADATA_SELECT = "id, task_run_id, project_id, created_at";
 const SPEC_FULL_SELECT = "id, task_run_id, project_id, file_path, created_at";
 
-export function slugifySpecName(name?: string | null): string {
-  if (!name?.trim()) return "spec";
-  const slug = name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return slug || "spec";
-}
-
 export function formatSpecFileName(params: {
   projectName?: string | null;
   taskRunId?: string;
   createdAt?: string;
 }): string {
-  const baseName = slugifySpecName(params.projectName);
+  const baseName = params.projectName
+    ? params.projectName
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+    : "";
   const shortRunId = params.taskRunId ? params.taskRunId.replace(/-/g, "").slice(0, 8) : "";
 
-  if (baseName !== "spec" && shortRunId) {
+  if (baseName && shortRunId) {
     return `${baseName}-spec-${shortRunId}.md`;
   }
-  if (baseName !== "spec") {
+  if (baseName) {
     return `${baseName}-spec.md`;
   }
   if (shortRunId) {

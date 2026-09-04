@@ -1,9 +1,8 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import type { DialogKind } from "@/components/editor/project-dialog-context";
-import { projectSlug, slugify } from "@/lib/utils";
 
 function unwrapErrorMessage(err: unknown, fallback: string): string {
   let current: unknown = err;
@@ -37,10 +36,8 @@ export interface DeleteTarget {
 export interface UseProjectActionsResult {
   openDialog: DialogKind;
   createName: string;
-  createSlug: string;
   renameTarget: RenameTarget | null;
   renameName: string;
-  renameSlug: string;
   deleteTarget: DeleteTarget | null;
   loading: boolean;
   error: string | null;
@@ -66,29 +63,14 @@ export function useProjectActions(): UseProjectActionsResult {
   const pathname = usePathname();
   const [openDialog, setOpenDialog] = useState<DialogKind>(null);
   const [createName, setCreateName] = useState("");
-  const [createSuffix, setCreateSuffix] = useState("");
   const [renameTarget, setRenameTarget] = useState<RenameTarget | null>(null);
   const [renameName, setRenameName] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createSlug = useMemo(() => {
-    const base = slugify(createName);
-    if (!base && !createSuffix) return "untitled";
-    if (!base) return createSuffix;
-    if (!createSuffix) return base;
-    return `${base}-${createSuffix}`;
-  }, [createName, createSuffix]);
-
-  const renameSlug = useMemo(() => {
-    if (!renameTarget) return "";
-    return projectSlug(renameName, renameTarget.projectId);
-  }, [renameName, renameTarget]);
-
   const openCreate = useCallback((initialError?: string) => {
     setCreateName("");
-    setCreateSuffix(Math.random().toString(36).slice(2, 8));
     setError(initialError ?? null);
     setOpenDialog("create");
   }, []);
@@ -180,10 +162,8 @@ export function useProjectActions(): UseProjectActionsResult {
   return {
     openDialog,
     createName,
-    createSlug,
     renameTarget,
     renameName,
-    renameSlug,
     deleteTarget,
     loading,
     error,

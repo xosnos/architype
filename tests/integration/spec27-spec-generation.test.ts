@@ -54,7 +54,6 @@ import {
   getProjectSpec,
   listProjectSpecs,
   parseSpecStoragePath,
-  slugifySpecName,
 } from "../../lib/specs/queries";
 import { PermanentAiError, TransientAiError } from "../../supabase/functions/_shared/design-agent";
 import {
@@ -922,7 +921,7 @@ async function runSpec27IntegrationSuite() {
       assert.strictEqual(specs[0].taskRunId, runId2, "Newest spec must be first in list");
       assert.strictEqual(specs[1].taskRunId, runId1);
 
-      // Verify filenames formatted properly with slug and short run ID
+      // Verify filenames formatted properly with lowercase dashed project name and short run ID
       const shortRunId2 = runId2.replace(/-/g, "").slice(0, 8);
       assert.strictEqual(specs[0].fileName, `payment-infrastructure-spec-${shortRunId2}.md`);
 
@@ -1030,7 +1029,7 @@ This is a test spec artifact stored at a deterministic path.
       assert.strictEqual(contentWithoutPrefix, sampleMarkdown);
     });
 
-    await test("Utility functions: parseSpecStoragePath, cleanMarkdownSpec, slugifySpecName, formatSpecFileName", async () => {
+    await test("Utility functions: parseSpecStoragePath, cleanMarkdownSpec, formatSpecFileName", async () => {
       // 1. parseSpecStoragePath
       assert.deepStrictEqual(parseSpecStoragePath("specs/proj-1/run-2.md"), {
         bucket: "specs",
@@ -1052,13 +1051,7 @@ Content here`;
       const rawWrappedFences = "```markdown\n# Wrapped Spec\nContent\n```";
       assert.strictEqual(cleanMarkdownSpec(rawWrappedFences), "# Wrapped Spec\nContent");
 
-      // 3. slugifySpecName
-      assert.strictEqual(slugifySpecName("My Awesome App!"), "my-awesome-app");
-      assert.strictEqual(slugifySpecName("   Multiple   Spaces   "), "multiple-spaces");
-      assert.strictEqual(slugifySpecName(""), "spec");
-      assert.strictEqual(slugifySpecName(null), "spec");
-
-      // 4. formatSpecFileName
+      // 3. formatSpecFileName
       assert.strictEqual(
         formatSpecFileName({
           projectName: "Realtime Chat App",

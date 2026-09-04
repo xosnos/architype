@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 interface CreateProjectDialogProps {
   open: boolean;
   name: string;
-  slug: string;
   loading: boolean;
   error: string | null;
   onNameChange: (value: string) => void;
@@ -26,7 +25,6 @@ interface CreateProjectDialogProps {
 export function CreateProjectDialog({
   open,
   name,
-  slug,
   loading,
   error,
   onNameChange,
@@ -54,9 +52,7 @@ export function CreateProjectDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create project</DialogTitle>
-          <DialogDescription>
-            Give your architecture workspace a name. A slug is generated automatically.
-          </DialogDescription>
+          <DialogDescription>Give your architecture workspace a name.</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-5 py-6">
@@ -77,22 +73,6 @@ export function CreateProjectDialog({
               autoComplete="off"
               disabled={loading}
             />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
-              Slug preview
-            </span>
-            <div
-              className="flex h-9 items-center rounded-xl px-3 font-mono text-sm"
-              style={{
-                backgroundColor: "var(--bg-elevated)",
-                border: "1px solid var(--border-default)",
-                color: slug ? "var(--text-secondary)" : "var(--text-faint)",
-              }}
-            >
-              {slug || "untitled"}
-            </div>
           </div>
         </div>
 
