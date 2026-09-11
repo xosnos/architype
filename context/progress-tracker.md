@@ -22,6 +22,12 @@ Update this file whenever the current phase, active feature, or implementation s
 
 The entries below record implementation state at the time each change landed. The current status and known gaps above take precedence where later work changed behavior.
 
+### Dashboard JWT timing fix (2026-09-11)
+
+Serialized the owned and shared project reads during the first dashboard render. Concurrent reads with a newly issued Supabase session intermittently caused PostgREST to reject one request with `JWT issued at future`, while the same token worked on the next render.
+
+Added a regression test for the required read order. Verified four complete local OTP flows with no JWT errors, the focused unit test, `pnpm lint`, and `pnpm build`.
+
 - **Dashboard and project route migration (2026-08-26)**:
   - Moved the home route from `/editor` to `/dashboard` and the workspace route from `/editor/[roomId]` to `/projects/[projectId]`.
   - Updated auth redirects, settings cleanup, navbar and sidebar links, project create/delete navigation, access-denied navigation, and shared project URLs.

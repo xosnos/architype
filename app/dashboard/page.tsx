@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { EditorChrome } from "@/components/editor/editor-chrome";
 import { EditorHome } from "@/components/editor/editor-home";
+import { loadDashboardProjects } from "@/lib/projects/dashboard";
 import { listOwnedProjects, listSharedProjects } from "@/lib/projects/queries";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 
@@ -17,10 +18,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect("/login");
   }
 
-  const [ownedProjects, sharedProjects] = await Promise.all([
-    listOwnedProjects(supabase, user.id),
-    listSharedProjects(supabase, user.email ?? ""),
-  ]);
+  const { ownedProjects, sharedProjects } = await loadDashboardProjects(
+    () => listOwnedProjects(supabase, user.id),
+    () => listSharedProjects(supabase, user.email ?? ""),
+  );
 
   return (
     <EditorChrome
